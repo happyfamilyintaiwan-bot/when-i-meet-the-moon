@@ -19,6 +19,19 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://story.knittinghiyori.com/when-i-meet-the-moon/og.jpg">
 <meta name="theme-color" content="#1F2437">
+<!-- ===== GA4：把下面兩處的 G-ZQZHTYTRMQ 換成你的評估 ID ===== -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-ZQZHTYTRMQ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){ dataLayer.push(arguments); }
+  gtag('js', new Date());
+  gtag('config', 'G-ZQZHTYTRMQ', {
+    page_title: '折月亮 When I Meet the Moon 互動頁',
+    linker: { domains: ['knittinghiyori.com', 'story.knittinghiyori.com'] }
+  });
+</script>
+<!-- ===== GA4 結束 ===== -->
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@300;500&family=Noto+Sans+TC:wght@300;400;500&family=Cormorant+Garamond:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
@@ -114,11 +127,43 @@ blockquote{font-family:var(--serif);font-weight:300;font-size:1.16rem;line-heigh
 .chatbtn[hidden]{display:none;}
 
 /* bubbles */
-.bubs{display:flex;justify-content:center;gap:46px;margin:26px 0 30px;}
-.bub{background:rgba(143,166,196,.55);color:#1F2437;border-radius:16px;padding:11px 20px;
-  letter-spacing:.16em;animation:bob 2.8s ease-in-out infinite;}
+.bubs{display:flex;justify-content:center;gap:26px;margin:26px 0 14px;flex-wrap:wrap;}
+.bub{background:rgba(143,166,196,.55);color:#1F2437;border:0;border-radius:16px;padding:13px 20px;
+  letter-spacing:.16em;font-family:var(--serif);font-size:1rem;line-height:1.7;cursor:pointer;
+  max-width:120px;text-align:center;animation:bob 2.8s ease-in-out infinite;
+  transition:max-width .5s ease,background .4s ease,letter-spacing .4s ease;}
 .bub.b2{background:rgba(217,184,204,.55);animation-delay:1.4s;}
+.bub.open{max-width:270px;letter-spacing:.02em;background:rgba(242,237,228,.9);animation:none;}
+.bub:focus-visible{outline:2px solid var(--mg);outline-offset:3px;}
 @keyframes bob{0%,100%{transform:translateY(0);}50%{transform:translateY(-6px);}}
+.bubhint{text-align:center;font-size:.82rem;letter-spacing:.12em;color:#C4CFDE;margin-bottom:26px;}
+
+/* stage: he is always on her right */
+.stage{position:relative;height:118px;border-radius:12px;background:rgba(242,237,228,.05);
+  border:1px solid rgba(242,237,228,.12);margin:8px 0 12px;overflow:hidden;cursor:crosshair;touch-action:none;}
+.fig{position:absolute;top:50%;width:34px;height:34px;border-radius:50%;margin-top:-17px;margin-left:-17px;
+  transition:left .55s cubic-bezier(.22,.7,.3,1);display:flex;align-items:center;justify-content:center;
+  font-family:var(--serif);font-size:.82rem;letter-spacing:.04em;}
+.figHer{background:var(--mp);color:#1F2437;}
+.figHim{background:var(--mg);color:#1F2437;}
+.stagehint{text-align:center;font-size:.82rem;letter-spacing:.12em;color:#C4CFDE;margin-bottom:22px;}
+
+/* contact card */
+.contact{background:rgba(242,237,228,.07);border:1px solid rgba(242,237,228,.16);border-radius:14px;
+  padding:18px 20px;display:flex;align-items:center;gap:14px;max-width:340px;margin:10px auto 0;
+  transition:opacity .6s ease,transform .6s ease;}
+.contact .av{width:44px;height:44px;border-radius:50%;background:var(--mg);flex:0 0 44px;
+  display:flex;align-items:center;justify-content:center;color:#1F2437;font-family:var(--serif);font-size:1.1rem;}
+.contact .nm{flex:1 1 auto;text-align:left;font-family:var(--serif);font-size:1.05rem;letter-spacing:.06em;}
+.contact button{background:transparent;border:1px solid rgba(242,237,228,.32);color:#D6D2CB;
+  border-radius:999px;padding:7px 15px;font-size:.84rem;font-family:var(--sans);cursor:pointer;
+  transition:background .25s ease;}
+.contact button:hover{background:rgba(242,237,228,.12);}
+.contact button:focus-visible{outline:2px solid var(--mg);outline-offset:3px;}
+.contact.gone{opacity:0;transform:translateY(-10px) scale(.96);pointer-events:none;}
+#callback{margin-top:26px;opacity:0;transform:translateY(14px);transition:opacity 1s ease,transform 1s ease;}
+#callback.on{opacity:1;transform:none;}
+#callback .cbline{font-family:var(--serif);font-size:1.14rem;color:var(--mg);text-align:center;margin-top:16px;line-height:1.9;}
 
 /* end */
 #end{text-align:center;align-items:center;min-height:100vh;}
@@ -198,6 +243,17 @@ footer a{color:#C4C0CC;}
   <p class="hint">往下滑</p>
 </section>
 
+<section class="rev" id="prologue">
+  <p class="eyebrow">00 &nbsp;BEFORE</p>
+  <h2>開始之前</h2>
+  <p class="body">故事開始的那一天，她做了一件事。</p>
+  <div class="contact" id="contact">
+    <div class="av">傅</div>
+    <div class="nm">傅識則</div>
+    <button type="button" id="delbtn">刪除</button>
+  </div>
+</section>
+
 <section class="rev">
   <p class="eyebrow">01 &nbsp;NEW MOON</p>
   <h2>十六歲，她在台下看著發光的人</h2>
@@ -216,6 +272,12 @@ footer a{color:#C4C0CC;}
   <p class="eyebrow">03 &nbsp;FIRST QUARTER</p>
   <h2>他總是站在她的右邊</h2>
   <p class="body">早在所有人察覺之前，他就知道她左耳聽不見。他沒有問，沒有點破，沒有做出任何體貼的樣子。</p>
+  <div class="stage" id="stage" role="img" aria-label="兩個圓點，無論她移動到哪裡，他都在她的右邊">
+    <div class="fig figHer" id="figHer" style="left:38%">厘</div>
+    <div class="fig figHim" id="figHim" style="left:52%">則</div>
+  </div>
+  <p class="stagehint" id="stagehint">移動看看</p>
+
   <p class="body"><em>他只是換了個位置站，然後一直站在那裡。</em></p>
 </section>
 
@@ -273,7 +335,11 @@ footer a{color:#C4C0CC;}
 <section class="rev">
   <p class="eyebrow">07 &nbsp;LAST QUARTER</p>
   <h2>兩個人都有話沒說</h2>
-  <div class="bubs"><div class="bub">⋯</div><div class="bub b2">⋯</div></div>
+  <div class="bubs">
+    <button class="bub" type="button" data-say="你是不是不要我了" aria-label="展開她沒有說出口的話">⋯</button>
+    <button class="bub b2" type="button" data-say="我配不上現在的你" aria-label="展開他沒有說出口的話">⋯</button>
+  </div>
+  <p class="bubhint">點點看</p>
   <p class="body">他認定她喜歡的是以前那個發光的自己，所以先走一步，替她把選擇做了。</p>
   <p class="body"><em>不是一個人不說，是兩個人都沒說。</em></p>
 </section>
@@ -298,6 +364,14 @@ footer a{color:#C4C0CC;}
   <h2>刪我微信就這麼乾脆</h2>
   <p class="body">全書的開頭，是她紅著眼睛刪掉了關於他的所有聯絡方式。</p>
   <p class="body">全書的結尾，他懶洋洋地翻了這筆舊帳。</p>
+  <div id="callback">
+    <div class="contact" style="opacity:1;transform:none;">
+      <div class="av">傅</div>
+      <div class="nm">傅識則</div>
+    </div>
+    <p class="cbline" id="cbline">刪我微信就這麼乾脆。</p>
+  </div>
+
   <p class="body"><em>開場的那一刪，他記了一整本書。</em></p>
 </section>
 
@@ -427,12 +501,44 @@ footer a{color:#C4C0CC;}
   if ('IntersectionObserver' in window && !reduce){
     var io = new IntersectionObserver(function(entries){
       entries.forEach(function(e){
-        if (e.isIntersecting){ e.target.classList.add('on'); io.unobserve(e.target); }
+        if (e.isIntersecting){ e.target.classList.add('on'); markPhase(e.target); io.unobserve(e.target); }
       });
     }, { threshold: 0.18 });
     revs.forEach(function(el){ io.observe(el); });
   } else {
     revs.forEach(function(el){ el.classList.add('on'); });
+  }
+
+  /* ---- GA4 events ---- */
+  function ev(name, params){
+    if (typeof window.gtag === 'function') window.gtag('event', name, params || {});
+  }
+
+  var links = document.querySelectorAll('a[data-cta]');
+  links.forEach(function(a){
+    a.addEventListener('click', function(){
+      ev('cta_click', {
+        cta_id: a.getAttribute('data-cta'),
+        link_url: a.getAttribute('href'),
+        page_group: 'when-i-meet-the-moon'
+      });
+    });
+  });
+
+  var seen = {};
+  function markPhase(el){
+    var eb = el.querySelector('.eyebrow');
+    if (!eb) return;
+    var name = eb.textContent.replace(/\s+/g, ' ').trim();
+    if (seen[name]) return;
+    seen[name] = 1;
+    ev('phase_reached', { phase_name: name, page_group: 'when-i-meet-the-moon' });
+    if (el.id === 'end') ev('reached_end', { page_group: 'when-i-meet-the-moon' });
+    if (name.indexOf('10') === 0){
+      if (!deleted) cbline.textContent = '你沒有刪。她刪了。';
+      callback.classList.add('on');
+      ev('callback_shown', { deleted: deleted ? 'yes' : 'no', page_group: 'when-i-meet-the-moon' });
+    }
   }
 
   /* ---- ear toggle ---- */
@@ -445,9 +551,62 @@ footer a{color:#C4C0CC;}
     bR.setAttribute('aria-pressed', side === 'R' ? 'true' : 'false');
     if (side === 'L') grid.classList.add('showL');
     if (side === 'R') grid.classList.add('showR');
+    if (side) ev('ear_toggle', { side: side === 'L' ? 'left' : 'right', page_group: 'when-i-meet-the-moon' });
   }
   bL.addEventListener('click', function(){ setEar(bL.getAttribute('aria-pressed') === 'true' ? '' : 'L'); });
   bR.addEventListener('click', function(){ setEar(bR.getAttribute('aria-pressed') === 'true' ? '' : 'R'); });
+
+  /* ---- 07: unsent messages ---- */
+  var bubs = document.querySelectorAll('.bub');
+  bubs.forEach(function(b){
+    var idle = b.textContent;
+    var timer = null;
+    b.addEventListener('click', function(){
+      if (b.classList.contains('open')) return;
+      b.classList.add('open');
+      b.textContent = b.getAttribute('data-say');
+      ev('bubble_open', { line: b.getAttribute('data-say'), page_group: 'when-i-meet-the-moon' });
+      window.clearTimeout(timer);
+      timer = window.setTimeout(function(){
+        b.classList.remove('open');
+        b.textContent = idle;
+      }, reduce ? 3200 : 2400);
+    });
+  });
+
+  /* ---- 03: he stays on her right ---- */
+  var stage = document.getElementById('stage');
+  var figHer = document.getElementById('figHer');
+  var figHim = document.getElementById('figHim');
+  var stagehint = document.getElementById('stagehint');
+  var moves = 0;
+  function place(clientX){
+    var r = stage.getBoundingClientRect();
+    var pct = ((clientX - r.left) / r.width) * 100;
+    if (pct < 12) pct = 12;
+    if (pct > 74) pct = 74;
+    figHer.style.left = pct.toFixed(1) + '%';
+    figHim.style.left = (pct + 16).toFixed(1) + '%';
+    moves = moves + 1;
+    if (moves === 6){
+      stagehint.textContent = '他一直在同一邊';
+      ev('stage_noticed', { page_group: 'when-i-meet-the-moon' });
+    }
+  }
+  stage.addEventListener('pointermove', function(e){ place(e.clientX); });
+  stage.addEventListener('pointerdown', function(e){ place(e.clientX); });
+
+  /* ---- 00 + 10: the contact card ---- */
+  var contact = document.getElementById('contact');
+  var delbtn = document.getElementById('delbtn');
+  var callback = document.getElementById('callback');
+  var cbline = document.getElementById('cbline');
+  var deleted = false;
+  delbtn.addEventListener('click', function(){
+    deleted = true;
+    contact.classList.add('gone');
+    ev('contact_deleted', { page_group: 'when-i-meet-the-moon' });
+  });
 
   /* ---- chat ---- */
   var phone = document.getElementById('phone');
@@ -466,6 +625,7 @@ footer a{color:#C4C0CC;}
     add('him', '？', 1100);
     add('me', '！！！', 1900);
     add('him', '雲厘厘', 3000);
+    ev('meme_sent', { page_group: 'when-i-meet-the-moon' });
   });
 })();
 </script>
