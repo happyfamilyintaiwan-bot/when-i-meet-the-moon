@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>折月亮 When I Meet the Moon｜編織日和・故事</title>
+<meta name="description" content="用月亮的盈虧重走一次竹已《折月亮》。往下滑，月亮會缺一次，再圓一次。">
+<link rel="canonical" href="https://story.knittinghiyori.com/when-i-meet-the-moon/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="折月亮 When I Meet the Moon｜編織日和・故事">
+<meta property="og:description" content="往下滑，月亮會缺一次，再圓一次。">
+<meta property="og:url" content="https://story.knittinghiyori.com/when-i-meet-the-moon/">
+<meta property="og:site_name" content="編織日和・故事">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://story.knittinghiyori.com/when-i-meet-the-moon/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="折月亮 When I Meet the Moon 互動頁">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://story.knittinghiyori.com/when-i-meet-the-moon/og.jpg">
+<meta name="theme-color" content="#1F2437">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@300;500&family=Noto+Sans+TC:wght@300;400;500&family=Cormorant+Garamond:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --mw:#F2EDE4; --mc:#E8DCC8; --mg:#D9B87C; --mr:#C0784E;
+  --mp:#D9B8CC; --mm:#A88BA8; --mh:#8FA6C4; --md:#4A6FA5; --mn:#2E3247;
+  --serif:'Noto Serif TC',serif; --sans:'Noto Sans TC',sans-serif; --lat:'Cormorant Garamond',serif;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{
+  font-family:var(--sans); font-weight:300; line-height:2; letter-spacing:.03em;
+  color:var(--mw); background:#232842; transition:background-color .6s linear;
+  overflow-x:hidden; -webkit-font-smoothing:antialiased;
+}
+a{color:inherit;}
+
+/* starfield */
+#sky{position:fixed;inset:0;z-index:0;pointer-events:none;}
+#sky span{position:absolute;border-radius:50%;background:#F2EDE4;animation:tw 4s ease-in-out infinite;}
+@keyframes tw{0%,100%{opacity:.18;}50%{opacity:.95;}}
+
+/* fixed moon */
+#moonwrap{position:fixed;top:22px;right:22px;width:74px;height:74px;z-index:30;pointer-events:none;}
+#phaselabel{position:fixed;top:100px;right:22px;width:74px;text-align:center;z-index:30;
+  font-family:var(--lat);font-size:.78rem;letter-spacing:.18em;color:var(--mg);opacity:.75;pointer-events:none;}
+
+/* progress */
+#bar{position:fixed;top:0;left:0;height:2px;width:0;background:var(--mg);z-index:40;}
+
+/* layout */
+main{position:relative;z-index:5;}
+section{min-height:88vh;display:flex;flex-direction:column;justify-content:center;
+  padding:14vh 24px;max-width:640px;margin:0 auto;}
+.rev{opacity:0;transform:translateY(26px);transition:opacity 1s ease,transform 1s ease;}
+.rev.on{opacity:1;transform:none;}
+.eyebrow{font-family:var(--lat);font-size:.86rem;letter-spacing:.3em;color:var(--mg);margin-bottom:14px;}
+h2{font-family:var(--serif);font-weight:500;font-size:1.5rem;letter-spacing:.08em;line-height:1.65;margin-bottom:26px;}
+p.body{font-size:1rem;line-height:2.1;color:#D6D2CB;margin-bottom:1.3em;}
+p.body em{font-style:normal;color:var(--mw);border-bottom:1px solid var(--mg);padding-bottom:1px;}
+blockquote{font-family:var(--serif);font-weight:300;font-size:1.16rem;line-height:2;
+  border-left:2px solid var(--mg);padding-left:20px;margin:0 0 1.6em;color:var(--mw);}
+
+/* cover */
+#cover{min-height:100vh;text-align:center;align-items:center;}
+#cover h1{font-family:var(--serif);font-weight:500;font-size:3rem;letter-spacing:.2em;margin:26px 0 8px;}
+#cover .en{font-family:var(--lat);font-style:italic;font-size:1.2rem;letter-spacing:.1em;color:var(--mg);margin-bottom:30px;}
+#cover .lede{font-family:var(--serif);font-size:1.05rem;line-height:2.2;color:var(--mc);}
+#cover .hint{margin-top:44px;font-size:.82rem;letter-spacing:.16em;color:var(--mh);animation:fl 2.6s ease-in-out infinite;}
+@keyframes fl{0%,100%{transform:translateY(0);opacity:.55;}50%{transform:translateY(7px);opacity:1;}}
+#bigmoon{width:150px;height:150px;}
+
+/* ear */
+.eargrid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:8px 0 22px;}
+.earbox{border-radius:12px;padding:22px 18px;transition:background .4s ease,opacity .4s ease;cursor:default;}
+.earL{background:rgba(143,166,196,.14);}
+.earR{background:rgba(217,184,124,.14);}
+.earbox .tag{font-size:.74rem;letter-spacing:.2em;margin-bottom:12px;}
+.earL .tag{color:var(--mh);} .earR .tag{color:var(--mg);}
+.earbox .line{font-family:var(--serif);font-size:1.02rem;line-height:1.85;margin-bottom:12px;transition:filter .45s ease,opacity .45s ease,color .45s ease;}
+.earbox .note{font-size:.88rem;line-height:1.85;color:#C9C4CE;}
+.earL .line{color:#C3CEDE;filter:none;opacity:1;}
+.earR .line{color:var(--mw);}
+.eargrid.showL .earL{background:rgba(143,166,196,.26);}
+.eargrid.showL .earL .line{filter:blur(3.2px);opacity:.5;}
+.eargrid.showR .earR{background:rgba(217,184,124,.26);}
+.eargrid.showR .earR .line{filter:none;opacity:1;}
+.eartoggle{display:flex;gap:10px;margin-bottom:18px;}
+.eartoggle button{font-family:var(--sans);font-size:.86rem;letter-spacing:.1em;color:var(--mw);
+  background:rgba(242,237,228,.08);border:1px solid rgba(242,237,228,.22);border-radius:999px;
+  padding:8px 20px;cursor:pointer;transition:background .25s ease,border-color .25s ease;}
+.eartoggle button:hover{background:rgba(242,237,228,.16);}
+.eartoggle button[aria-pressed="true"]{background:var(--mg);border-color:var(--mg);color:#1F2437;}
+.eartoggle button:focus-visible{outline:2px solid var(--mg);outline-offset:3px;}
+.earfoot{font-family:var(--serif);font-size:1.02rem;color:var(--mc);text-align:center;line-height:1.95;margin-top:6px;}
+
+/* chat */
+.phone{background:rgba(242,237,228,.06);border:1px solid rgba(242,237,228,.14);border-radius:18px;
+  padding:18px 16px;margin:6px 0 20px;min-height:230px;display:flex;flex-direction:column;gap:10px;}
+.msg{max-width:78%;padding:10px 15px;border-radius:15px;font-size:.95rem;line-height:1.7;
+  animation:pop .32s ease;}
+@keyframes pop{from{opacity:0;transform:translateY(8px) scale(.96);}to{opacity:1;transform:none;}}
+.me{align-self:flex-end;background:var(--mg);color:#1F2437;border-bottom-right-radius:5px;}
+.him{align-self:flex-start;background:rgba(242,237,228,.13);color:var(--mw);border-bottom-left-radius:5px;}
+.meme{align-self:flex-end;background:rgba(242,237,228,.9);color:#1F2437;font-family:var(--serif);
+  padding:20px 22px;border-radius:12px;text-align:center;font-size:1rem;}
+.chatbtn{align-self:center;margin-top:auto;font-family:var(--sans);font-size:.88rem;letter-spacing:.08em;
+  background:transparent;border:1px dashed rgba(242,237,228,.35);color:var(--mc);border-radius:999px;
+  padding:10px 22px;cursor:pointer;transition:background .25s ease;}
+.chatbtn:hover{background:rgba(242,237,228,.1);}
+.chatbtn:focus-visible{outline:2px solid var(--mg);outline-offset:3px;}
+.chatbtn[hidden]{display:none;}
+
+/* bubbles */
+.bubs{display:flex;justify-content:center;gap:46px;margin:26px 0 30px;}
+.bub{background:rgba(143,166,196,.55);color:#1F2437;border-radius:16px;padding:11px 20px;
+  letter-spacing:.16em;animation:bob 2.8s ease-in-out infinite;}
+.bub.b2{background:rgba(217,184,204,.55);animation-delay:1.4s;}
+@keyframes bob{0%,100%{transform:translateY(0);}50%{transform:translateY(-6px);}}
+
+/* end */
+#end{text-align:center;align-items:center;min-height:100vh;}
+#end .again{margin:30px 0 40px;font-size:.88rem;letter-spacing:.16em;color:#C4CFDE;}
+.links{display:flex;flex-direction:column;gap:12px;width:100%;max-width:330px;}
+.lnk{display:block;text-decoration:none;border-radius:999px;padding:13px 24px;font-size:.94rem;
+  letter-spacing:.06em;transition:opacity .25s ease,background .25s ease;}
+.lnk.primary{background:var(--mg);color:#1F2437;}
+.lnk.ghost{background:transparent;border:1px solid rgba(242,237,228,.3);color:var(--mw);}
+.lnk:hover{opacity:.84;}
+.lnk:focus-visible{outline:2px solid var(--mg);outline-offset:3px;}
+footer{padding:0 24px 60px;text-align:center;font-size:.79rem;line-height:1.9;color:#C4C0CC;position:relative;z-index:5;}
+footer a{color:#C4C0CC;}
+
+@media (max-width:600px){
+  #cover h1{font-size:2.3rem;}
+  #bigmoon{width:118px;height:118px;}
+  h2{font-size:1.26rem;}
+  #moonwrap{width:54px;height:54px;top:14px;right:14px;}
+  #phaselabel{top:72px;right:14px;width:54px;font-size:.68rem;}
+  .eargrid{grid-template-columns:1fr;}
+  section{padding:11vh 20px;}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto;}
+  *{animation:none !important;transition:none !important;}
+  .rev{opacity:1;transform:none;}
+}
+</style>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage",
+"name":"折月亮 When I Meet the Moon","inLanguage":"zh-Hant",
+"url":"https://story.knittinghiyori.com/when-i-meet-the-moon/",
+"description":"用月亮的盈虧重走一次竹已《折月亮》。",
+"isPartOf":{"@type":"WebSite","name":"編織日和・故事","url":"https://story.knittinghiyori.com/"},
+"about":{"@type":"Book","name":"折月亮","author":{"@type":"Person","name":"竹已"},"publisher":{"@type":"Organization","name":"高寶書版"}},
+"breadcrumb":{"@type":"BreadcrumbList","itemListElement":[
+{"@type":"ListItem","position":1,"name":"編織日和・故事","item":"https://story.knittinghiyori.com/"},
+{"@type":"ListItem","position":2,"name":"折月亮"}]}}
+</script>
+</head>
+<body>
+
+<div id="bar"></div>
+<div id="sky" aria-hidden="true"></div>
+
+<div id="moonwrap" aria-hidden="true">
+  <svg viewBox="0 0 100 100">
+    <defs>
+      <linearGradient id="g1" gradientUnits="userSpaceOnUse" x1="12" y1="14" x2="86" y2="90">
+        <stop offset="0%" stop-color="#FFF6DE"/><stop offset="50%" stop-color="#EFC983"/><stop offset="100%" stop-color="#C08A44"/>
+      </linearGradient>
+      <filter id="sf" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="5"/></filter>
+      <mask id="mk"><rect width="100" height="100" fill="#fff"/><circle id="mc" cx="50" cy="46" r="44" fill="#000" filter="url(#sf)"/></mask>
+    </defs>
+    <circle cx="50" cy="50" r="41" fill="url(#g1)" mask="url(#mk)"/>
+  </svg>
+</div>
+<div id="phaselabel">朔</div>
+
+<main>
+
+<section id="cover">
+  <svg id="bigmoon" viewBox="0 0 100 100" aria-label="月亮">
+    <defs>
+      <radialGradient id="halo" gradientUnits="userSpaceOnUse" cx="50" cy="50" r="50">
+        <stop offset="55%" stop-color="#F7DDA4" stop-opacity=".2"/><stop offset="100%" stop-color="#F7DDA4" stop-opacity="0"/>
+      </radialGradient>
+      <mask id="mk2"><rect width="100" height="100" fill="#fff"/><circle cx="72" cy="38" r="44" fill="#000" filter="url(#sf)"/></mask>
+    </defs>
+    <circle cx="50" cy="50" r="50" fill="url(#halo)"/>
+    <circle cx="50" cy="50" r="41" fill="url(#g1)" mask="url(#mk2)"/>
+  </svg>
+  <h1>折月亮</h1>
+  <p class="en">When I Meet the Moon</p>
+  <p class="lede">月亮從來沒有缺過。<br>缺的是照到它身上的光。</p>
+  <p class="hint">往下滑</p>
+</section>
+
+<section class="rev">
+  <p class="eyebrow">01 &nbsp;NEW MOON</p>
+  <h2>十六歲，她在台下看著發光的人</h2>
+  <p class="body">朔月不是沒有月亮。是它整個亮面都背對著我們——就在那裡，滿滿的，一點也照不過來。</p>
+  <p class="body">她那時候還不知道，自己有一天會伸手。</p>
+</section>
+
+<section class="rev">
+  <p class="eyebrow">02 &nbsp;WAXING CRESCENT</p>
+  <h2>南蕪下著雨的那天</h2>
+  <blockquote>遇見月亮那天，南蕪下著雨，月亮的光芒像是被蒙了層灰，與黑夜融為一體，沉默而枯朽。</blockquote>
+  <p class="body">雨夜是最不可能看見月亮的天氣。<em>她偏偏在那天遇見了。</em></p>
+</section>
+
+<section class="rev">
+  <p class="eyebrow">03 &nbsp;FIRST QUARTER</p>
+  <h2>他總是站在她的右邊</h2>
+  <p class="body">早在所有人察覺之前，他就知道她左耳聽不見。他沒有問，沒有點破，沒有做出任何體貼的樣子。</p>
+  <p class="body"><em>他只是換了個位置站，然後一直站在那裡。</em></p>
+</section>
+
+<section class="rev">
+  <p class="eyebrow">04 &nbsp;WAXING GIBBOUS</p>
+  <h2>左耳與右耳</h2>
+  <blockquote>如果你有什麼事情，想有人聽，又不想讓人知道。你可以對著我的左耳說。</blockquote>
+  <p class="body">她一輩子都覺得那隻耳朵是她的殘缺。這一刻，它變成了她唯一能給的東西。</p>
+
+  <div class="eartoggle" role="group" aria-label="切換左耳或右耳">
+    <button type="button" id="btnL" aria-pressed="false">對著左耳</button>
+    <button type="button" id="btnR" aria-pressed="false">對著右耳</button>
+  </div>
+
+  <div class="eargrid" id="eargrid">
+    <div class="earbox earL">
+      <p class="tag">原著・雲厘</p>
+      <p class="line">你可以對著我的左耳說</p>
+      <p class="note">說了，但不會被聽見。<br>她給他一個安全的出口。</p>
+    </div>
+    <div class="earbox earR">
+      <p class="tag">劇版・傅識則</p>
+      <p class="line">想告訴你的話，我都會在你右耳說</p>
+      <p class="note">說了，而且要你聽見。<br>他拒絕那個出口。</p>
+    </div>
+  </div>
+  <p class="earfoot">她給他一個可以不被聽見的地方。<br>他選了聽得見的那一邊。</p>
+</section>
+
+<section class="rev">
+  <p class="eyebrow">05 &nbsp;FULL MOON</p>
+  <h2>與現實無關的那段愛情</h2>
+  <blockquote>在成年人的世界中，他給了她一段，與現實無關的愛情。他的鍾愛，只與她有關。</blockquote>
+  <p class="body">滿月是最亮的一刻。也是開始虧的那一刻。</p>
+</section>
+
+<section class="rev">
+  <p class="eyebrow">＊ &nbsp;INTERLUDE</p>
+  <h2>她不小心按到了什麼</h2>
+  <div class="phone" id="phone">
+    <div class="msg him">在幹嘛</div>
+    <button class="chatbtn" id="sendbtn" type="button">手滑，按下去</button>
+  </div>
+  <p class="body">社恐最深的恐懼，是不受控地暴露自己。書裡讓她在最想躲的人面前發生了。</p>
+</section>
+
+<section class="rev">
+  <p class="eyebrow">06 &nbsp;WANING GIBBOUS</p>
+  <h2>不要逼著自己那麼陽光上進</h2>
+  <blockquote>你不要逼著自己去做這些，不要逼著自己那麼陽光上進。</blockquote>
+  <p class="body">她不是在嫌他不夠好。她發現他的「好起來」是演給她看的。</p>
+  <p class="body"><em>你不用為了留住我而假裝痊癒。</em></p>
+</section>
+
+<section class="rev">
+  <p class="eyebrow">07 &nbsp;LAST QUARTER</p>
+  <h2>兩個人都有話沒說</h2>
+  <div class="bubs"><div class="bub">⋯</div><div class="bub b2">⋯</div></div>
+  <p class="body">他認定她喜歡的是以前那個發光的自己，所以先走一步，替她把選擇做了。</p>
+  <p class="body"><em>不是一個人不說，是兩個人都沒說。</em></p>
+</section>
+
+<section class="rev">
+  <p class="eyebrow">08 &nbsp;WANING CRESCENT</p>
+  <h2>他停下來的那段時間</h2>
+  <p class="body">殘月是月相裡最細的一段，細到幾乎看不見。</p>
+  <p class="body">但它還在。而且從殘月開始，接下來的每一天都會更亮一點。</p>
+</section>
+
+<section class="rev">
+  <p class="eyebrow">09 &nbsp;WAXING AGAIN</p>
+  <h2>這次不是裝的了</h2>
+  <blockquote>和妳重新在一起後，就不再是裝的了。</blockquote>
+  <p class="body">中間隔的不是時間，是他自己走完的那一段路。她沒有替他走，也走不了。</p>
+  <p class="body"><em>光可以照到他，但走出來的還是他自己。</em></p>
+</section>
+
+<section class="rev">
+  <p class="eyebrow">10 &nbsp;FULL MOON</p>
+  <h2>刪我微信就這麼乾脆</h2>
+  <p class="body">全書的開頭，是她紅著眼睛刪掉了關於他的所有聯絡方式。</p>
+  <p class="body">全書的結尾，他懶洋洋地翻了這筆舊帳。</p>
+  <p class="body"><em>開場的那一刪，他記了一整本書。</em></p>
+</section>
+
+<section id="end" class="rev">
+  <blockquote style="border:0;padding:0;text-align:center;font-size:1.24rem;">所幸我足夠勇敢，<br>遇到月亮，遇見你——</blockquote>
+  <p class="again">月亮回到滿月了。往上滑，可以再看一次。</p>
+  <div class="links">
+    <a class="lnk primary" href="https://knittinghiyori.com/when-i-meet-the-moon/" data-cta="to-article">讀完整版劇評與十個名場面解析</a>
+    <a class="lnk ghost" href="https://s.shopee.tw/6VMzsFWrFR?share_channel_code=6" target="_blank" rel="sponsored nofollow noopener" data-cta="shopee">在蝦皮買《折月亮》台版套書</a>
+    <a class="lnk ghost" href="https://knittinghiyori.kit.com/2cf3d82ac1" target="_blank" rel="noopener" data-cta="newsletter">訂閱編織日和電子報</a>
+    <a class="lnk ghost" href="https://story.knittinghiyori.com/" data-cta="hub">回到編織日和・故事</a>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <p>本頁引用之台詞出自竹已《折月亮》台版（高寶書版）與晉江文學城官方文案，僅作評論引用之用。</p>
+  <p>蝦皮連結為聯盟行銷連結，透過它下單我會獲得少許回饋，你的售價不受影響。</p>
+  <p>編織日和・故事　<a href="https://knittinghiyori.com/">knittinghiyori.com</a></p>
+</footer>
+
+<script>
+(function(){
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ---- starfield ---- */
+  var sky = document.getElementById('sky');
+  var COLORS = ['#F2EDE4','#D9B87C','#D9B8CC'];
+  var frag = document.createDocumentFragment();
+  for (var i = 0; i > -1 && i < 90; i++){
+    var s = document.createElement('span');
+    var size = (Math.random() * 1.7 + 0.7).toFixed(2);
+    s.style.width = size + 'px';
+    s.style.height = size + 'px';
+    s.style.left = (Math.random() * 100).toFixed(2) + '%';
+    s.style.top = (Math.random() * 100).toFixed(2) + '%';
+    s.style.background = COLORS[Math.floor(Math.random() * 3)];
+    s.style.animationDelay = (Math.random() * 4).toFixed(2) + 's';
+    s.style.animationDuration = (3 + Math.random() * 3.5).toFixed(2) + 's';
+    if (reduce) { s.style.animation = 'none'; s.style.opacity = '0.5'; }
+    frag.appendChild(s);
+  }
+  sky.appendChild(frag);
+
+  /* ---- keyframe helpers ---- */
+  function lerp(a, b, t){ return a + (b - a) * t; }
+  function track(stops, prog){
+    var n = stops.length;
+    if (prog + 0.0001 > stops[n-1][0]) return stops[n-1][1];
+    for (var i = 0; i > -1 && i < n - 1; i++){
+      var a = stops[i], b = stops[i+1];
+      if (b[0] + 0.0001 > prog){
+        var span = b[0] - a[0];
+        var t = span > 0.00001 ? (prog - a[0]) / span : 0;
+        return lerp(a[1], b[1], t);
+      }
+    }
+    return stops[n-1][1];
+  }
+  function mixHex(c1, c2, t){
+    var r = Math.round(lerp(c1[0], c2[0], t));
+    var g = Math.round(lerp(c1[1], c2[1], t));
+    var b = Math.round(lerp(c1[2], c2[2], t));
+    return 'rgb(' + r + ',' + g + ',' + b + ')';
+  }
+
+  /* phase: 0 = 朔, 1 = 望 */
+  var PHASE = [[0,0.02],[0.11,0.14],[0.24,0.42],[0.36,0.74],[0.46,1],[0.56,0.98],
+               [0.64,0.66],[0.73,0.3],[0.81,0.09],[0.9,0.5],[1,1]];
+  /* background travels dark to warm to dark to warm */
+  var BG = [
+    [0.00,[35,40,66]], [0.20,[52,52,84]], [0.34,[74,58,82]], [0.46,[84,62,78]],
+    [0.58,[64,54,76]], [0.72,[38,42,64]], [0.82,[28,32,52]], [0.92,[62,56,80]], [1.00,[84,62,78]]
+  ];
+  var NAMES = [[0,'朔'],[0.11,'蛾眉'],[0.24,'上弦'],[0.36,'盈凸'],[0.46,'望'],[0.56,'望'],
+               [0.64,'虧凸'],[0.73,'下弦'],[0.81,'殘月'],[0.9,'蛾眉'],[1,'望']];
+
+  function nameFor(prog){
+    var out = NAMES[0][1];
+    for (var i = 0; i > -1 && i < NAMES.length; i++){
+      if (prog + 0.0001 > NAMES[i][0]) out = NAMES[i][1];
+    }
+    return out;
+  }
+  function bgFor(prog){
+    var n = BG.length;
+    if (prog + 0.0001 > BG[n-1][0]) return 'rgb(84,62,78)';
+    for (var i = 0; i > -1 && i < n - 1; i++){
+      if (BG[i+1][0] + 0.0001 > prog){
+        var span = BG[i+1][0] - BG[i][0];
+        var t = span > 0.00001 ? (prog - BG[i][0]) / span : 0;
+        return mixHex(BG[i][1], BG[i+1][1], t);
+      }
+    }
+    return 'rgb(84,62,78)';
+  }
+
+  var mc = document.getElementById('mc');
+  var bar = document.getElementById('bar');
+  var label = document.getElementById('phaselabel');
+  var ticking = false;
+
+  function update(){
+    var h = document.documentElement;
+    var max = h.scrollHeight - h.clientHeight;
+    var prog = max > 0 ? h.scrollTop / max : 0;
+    if (prog > 1) prog = 1;
+    var ph = track(PHASE, prog);
+    mc.setAttribute('cx', (50 + ph * 96).toFixed(2));
+    bar.style.width = (prog * 100).toFixed(2) + '%';
+    document.body.style.backgroundColor = bgFor(prog);
+    label.textContent = nameFor(prog);
+    ticking = false;
+  }
+  function onScroll(){
+    if (ticking) return;
+    ticking = true;
+    window.requestAnimationFrame(update);
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll);
+  update();
+
+  /* ---- reveal ---- */
+  var revs = document.querySelectorAll('.rev');
+  if ('IntersectionObserver' in window && !reduce){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if (e.isIntersecting){ e.target.classList.add('on'); io.unobserve(e.target); }
+      });
+    }, { threshold: 0.18 });
+    revs.forEach(function(el){ io.observe(el); });
+  } else {
+    revs.forEach(function(el){ el.classList.add('on'); });
+  }
+
+  /* ---- ear toggle ---- */
+  var grid = document.getElementById('eargrid');
+  var bL = document.getElementById('btnL');
+  var bR = document.getElementById('btnR');
+  function setEar(side){
+    grid.classList.remove('showL', 'showR');
+    bL.setAttribute('aria-pressed', side === 'L' ? 'true' : 'false');
+    bR.setAttribute('aria-pressed', side === 'R' ? 'true' : 'false');
+    if (side === 'L') grid.classList.add('showL');
+    if (side === 'R') grid.classList.add('showR');
+  }
+  bL.addEventListener('click', function(){ setEar(bL.getAttribute('aria-pressed') === 'true' ? '' : 'L'); });
+  bR.addEventListener('click', function(){ setEar(bR.getAttribute('aria-pressed') === 'true' ? '' : 'R'); });
+
+  /* ---- chat ---- */
+  var phone = document.getElementById('phone');
+  var sendbtn = document.getElementById('sendbtn');
+  function add(cls, text, delay){
+    window.setTimeout(function(){
+      var d = document.createElement('div');
+      d.className = 'msg ' + cls;
+      d.textContent = text;
+      phone.appendChild(d);
+    }, reduce ? 0 : delay);
+  }
+  sendbtn.addEventListener('click', function(){
+    sendbtn.hidden = true;
+    add('meme', '（當我老婆.JPG）', 200);
+    add('him', '？', 1100);
+    add('me', '！！！', 1900);
+    add('him', '雲厘厘', 3000);
+  });
+})();
+</script>
+
+</body>
+</html>
