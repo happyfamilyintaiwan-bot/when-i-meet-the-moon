@@ -19,18 +19,144 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://story.knittinghiyori.com/when-i-meet-the-moon/og.jpg">
 <meta name="theme-color" content="#1F2437">
-<!-- ===== GA4：把下面兩處的 G-ZQZHTYTRMQ 換成你的評估 ID ===== -->
+
+<!-- ── 網站圖示：六個頁面貼一模一樣的這段 ──────────────────────
+     圖檔只放一份，在 story.knittinghiyori.com 根目錄的 /icons/
+     開頭的斜線代表「從網域最上層找起」，所以每個子目錄都指到同一組 -->
+<link rel="icon" href="/icons/favicon.ico" sizes="any">
+<link rel="icon" type="image/svg+xml" href="/icons/icon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32.png">
+<link rel="icon" type="image/png" sizes="96x96" href="/icons/favicon-96.png">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<!-- ===== GA4：編織日和互動頁 統一追蹤 v1 ===== -->
+<script>
+  /* 本頁身分：整份追蹤碼中「唯一」需要逐頁修改的兩行 */
+  window.HY_STORY_ID    = 'when-i-meet-the-moon';
+  window.HY_STORY_TITLE = '互動頁｜折月亮 When I Meet the Moon';
+</script>
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZQZHTYTRMQ"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){ dataLayer.push(arguments); }
   gtag('js', new Date());
+  /* set 的參數會自動附加到「所有」事件，包含 GA4 自動蒐集的 page_view 與外連 click */
+  gtag('set', {
+    story_id: window.HY_STORY_ID,
+    content_group: 'interactive-story'
+  });
   gtag('config', 'G-ZQZHTYTRMQ', {
-    page_title: '互動頁｜折月亮 When I Meet the Moon',
-    linker: { domains: ['knittinghiyori.com', 'story.knittinghiyori.com'] }
+    page_title: window.HY_STORY_TITLE,
+    cookie_domain: '.knittinghiyori.com'
   });
 </script>
-<!-- ===== GA4 結束 ===== -->
+<script>
+/* ── 編織日和・互動頁共用追蹤 v1 ──────────────────────────────
+   四支互動頁貼一模一樣的這段，不要逐頁修改。
+   對外提供：hyEvent / hyStart / hyInteract / hySection / hyComplete / hyCount
+   ───────────────────────────────────────────────────────── */
+(function () {
+  var STORY = window.HY_STORY_ID || 'unknown';
+  var started = false, completed = false, exited = false;
+  var actCount = 0, actSeen = {}, progSeen = {}, secSeen = {}, maxScroll = 0;
+
+  function send(name, params) {
+    if (typeof window.gtag !== 'function') return;
+    params = params || {};
+    params.story_id = STORY;
+    window.gtag('event', name, params);
+  }
+  window.hyEvent = send;
+
+  /* 1. story_start：第一次捲動或第一次互動，只送一次 */
+  function start(entry) {
+    if (started) return;
+    started = true;
+    send('story_start', { entry_point: entry || 'scroll' });
+  }
+  window.hyStart = start;
+
+  /* 2. interaction：所有頁內互動都走這裡 */
+  window.hyInteract = function (type, id, index) {
+    start(String(id));
+    var key = type + '|' + id;
+    if (!actSeen[key]) { actSeen[key] = 1; actCount++; }
+    var p = { interaction_type: type, interaction_id: String(id) };
+    if (index !== undefined && index !== null && index !== '') p.interaction_index = Number(index);
+    send('interaction', p);
+  };
+  window.hyCount = function () { return actCount; };
+
+  /* 3. section_view：章節到達，同一段只送一次 */
+  window.hySection = function (id, index) {
+    if (secSeen[id]) return;
+    secSeen[id] = 1;
+    var p = { section_id: String(id) };
+    if (index !== undefined && index !== null) p.section_index = Number(index);
+    send('section_view', p);
+  };
+
+  /* 4. story_complete：讀到結尾，只送一次 */
+  window.hyComplete = function () {
+    if (completed) return;
+    completed = true;
+    send('story_complete', { interactions_count: actCount, max_scroll: maxScroll });
+  };
+
+  /* 5. story_progress：捲動 25 / 50 / 75 / 100 各一次 */
+  var MARKS = [25, 50, 75, 100], ticking = false, fallbackAt = 0;
+  /* 頁面若因 prefers-reduced-motion 而不跑 IntersectionObserver，用捲動百分比當備援 */
+  window.hyCompleteAtScroll = function (pct) { fallbackAt = Number(pct) || 95; };
+  function measure() {
+    ticking = false;
+    var d = document.documentElement;
+    var max = Math.max(d.scrollHeight, document.body ? document.body.scrollHeight : 0) - window.innerHeight;
+    if (max < 1) return;
+    var pct = Math.min(100, Math.max(0, Math.round(window.scrollY / max * 100)));
+    if (pct > maxScroll) maxScroll = pct;
+    if (pct >= 5) start('scroll');
+    if (fallbackAt && pct >= fallbackAt) window.hyComplete();
+    for (var i = 0; i < MARKS.length; i++) {
+      if (pct >= MARKS[i] && !progSeen[MARKS[i]]) {
+        progSeen[MARKS[i]] = 1;
+        send('story_progress', { percent_scrolled: MARKS[i] });
+      }
+    }
+  }
+  window.addEventListener('scroll', function () {
+    if (ticking) return;
+    ticking = true;
+    window.requestAnimationFrame(measure);
+  }, { passive: true });
+  window.addEventListener('resize', measure);
+
+  /* 6. cta_click：任何帶 data-cta 的元素，四頁共用同一組值 */
+  document.addEventListener('click', function (e) {
+    var t = e.target;
+    if (!t || !t.closest) return;
+    var a = t.closest('[data-cta]');
+    if (!a) return;
+    var id = a.getAttribute('data-cta') || '';
+    send('cta_click', {
+      cta_id: id,
+      cta_type: id.split('_')[0],
+      link_url: a.href || ''
+    });
+  }, true);
+
+  /* 7. story_exit：離開頁面時的總結，只送一次 */
+  function exit() {
+    if (exited || !started) return;
+    exited = true;
+    send('story_exit', { interactions_count: actCount, max_scroll: maxScroll });
+  }
+  document.addEventListener('visibilitychange', function () {
+    if (document.visibilityState === 'hidden') exit();
+  });
+  window.addEventListener('pagehide', exit);
+})();
+</script>
+<!-- ===== GA4 統一追蹤結束 ===== -->
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -336,8 +462,8 @@ footer a{color:#C4C0CC;}
   <p class="eyebrow">07 &nbsp;LAST QUARTER</p>
   <h2>兩個人都有話沒說</h2>
   <div class="bubs">
-    <button class="bub" type="button" data-say="你是不是不要我了" aria-label="展開她沒有說出口的話">⋯</button>
-    <button class="bub b2" type="button" data-say="我配不上現在的你" aria-label="展開他沒有說出口的話">⋯</button>
+    <button class="bub" type="button" data-who="bubble_her" data-say="你是不是不要我了" aria-label="展開她沒有說出口的話">⋯</button>
+    <button class="bub b2" type="button" data-who="bubble_him" data-say="我配不上現在的你" aria-label="展開他沒有說出口的話">⋯</button>
   </div>
   <p class="bubhint">點點看</p>
   <p class="body">他認定她喜歡的是以前那個發光的自己，所以先走一步，替她把選擇做了。</p>
@@ -379,7 +505,7 @@ footer a{color:#C4C0CC;}
   <blockquote style="border:0;padding:0;text-align:center;font-size:1.24rem;">所幸我足夠勇敢，<br>遇到月亮，遇見你——</blockquote>
   <p class="again">月亮回到滿月了。往上滑，可以再看一次。</p>
   <div class="links">
-    <a class="lnk primary" href="https://knittinghiyori.com/when-i-meet-the-moon/" data-cta="to-article">讀完整版劇評與十個名場面解析</a>
+    <a class="lnk primary" href="https://knittinghiyori.com/when-i-meet-the-moon/" data-cta="article">讀完整版劇評與十個名場面解析</a>
     <a class="lnk ghost" href="https://s.shopee.tw/6VMzsFWrFR?share_channel_code=6" target="_blank" rel="sponsored nofollow noopener" data-cta="shopee">在蝦皮買《折月亮》台版套書</a>
     <a class="lnk ghost" href="https://knittinghiyori.kit.com/2cf3d82ac1" target="_blank" rel="noopener" data-cta="newsletter">訂閱編織日和電子報</a>
     <a class="lnk ghost" href="https://story.knittinghiyori.com/" data-cta="hub">回到編織日和・故事</a>
@@ -507,37 +633,25 @@ footer a{color:#C4C0CC;}
     revs.forEach(function(el){ io.observe(el); });
   } else {
     revs.forEach(function(el){ el.classList.add('on'); });
+    hyCompleteAtScroll(95);   /* 關閉動畫時不跑 IntersectionObserver，改用捲動判定讀完 */
   }
 
-  /* ---- GA4 events ---- */
-  function ev(name, params){
-    if (typeof window.gtag === 'function') window.gtag('event', name, params || {});
-  }
-
-  var links = document.querySelectorAll('a[data-cta]');
-  links.forEach(function(a){
-    a.addEventListener('click', function(){
-      ev('cta_click', {
-        cta_id: a.getAttribute('data-cta'),
-        link_url: a.getAttribute('href'),
-        page_group: 'when-i-meet-the-moon'
-      });
-    });
-  });
-
-  var seen = {};
+  /* ---- GA4：事件一律走共用追蹤，CTA 由共用的 data-cta 監聽處理 ---- */
+  var seen = {}, secIdx = 0;
   function markPhase(el){
+    if (el.id === 'end'){ hySection('end', 99); hyComplete(); return; }
     var eb = el.querySelector('.eyebrow');
     if (!eb) return;
     var name = eb.textContent.replace(/\s+/g, ' ').trim();
     if (seen[name]) return;
     seen[name] = 1;
-    ev('phase_reached', { phase_name: name, page_group: 'when-i-meet-the-moon' });
-    if (el.id === 'end') ev('reached_end', { page_group: 'when-i-meet-the-moon' });
+    secIdx = secIdx + 1;
+    var slug = name.toLowerCase().replace(/[^a-z0-9]+/g, '_').replace(/^_+|_+$/g, '') || ('sec_' + secIdx);
+    hySection(slug, secIdx);
     if (name.indexOf('10') === 0){
       if (!deleted) cbline.textContent = '你沒有刪。她刪了。';
       callback.classList.add('on');
-      ev('callback_shown', { deleted: deleted ? 'yes' : 'no', page_group: 'when-i-meet-the-moon' });
+      hyEvent('story_payoff', { payoff_id: 'contact_callback', payoff_variant: deleted ? 'deleted' : 'kept' });
     }
   }
 
@@ -551,7 +665,7 @@ footer a{color:#C4C0CC;}
     bR.setAttribute('aria-pressed', side === 'R' ? 'true' : 'false');
     if (side === 'L') grid.classList.add('showL');
     if (side === 'R') grid.classList.add('showR');
-    if (side) ev('ear_toggle', { side: side === 'L' ? 'left' : 'right', page_group: 'when-i-meet-the-moon' });
+    if (side) hyInteract('toggle', side === 'L' ? 'ear_left' : 'ear_right');
   }
   bL.addEventListener('click', function(){ setEar(bL.getAttribute('aria-pressed') === 'true' ? '' : 'L'); });
   bR.addEventListener('click', function(){ setEar(bR.getAttribute('aria-pressed') === 'true' ? '' : 'R'); });
@@ -565,7 +679,7 @@ footer a{color:#C4C0CC;}
       if (b.classList.contains('open')) return;
       b.classList.add('open');
       b.textContent = b.getAttribute('data-say');
-      ev('bubble_open', { line: b.getAttribute('data-say'), page_group: 'when-i-meet-the-moon' });
+      hyInteract('reveal', b.getAttribute('data-who'));
       window.clearTimeout(timer);
       timer = window.setTimeout(function(){
         b.classList.remove('open');
@@ -590,7 +704,7 @@ footer a{color:#C4C0CC;}
     moves = moves + 1;
     if (moves === 6){
       stagehint.textContent = '他一直在同一邊';
-      ev('stage_noticed', { page_group: 'when-i-meet-the-moon' });
+      hyInteract('explore', 'stage_follow');
     }
   }
   stage.addEventListener('pointermove', function(e){ place(e.clientX); });
@@ -605,7 +719,7 @@ footer a{color:#C4C0CC;}
   delbtn.addEventListener('click', function(){
     deleted = true;
     contact.classList.add('gone');
-    ev('contact_deleted', { page_group: 'when-i-meet-the-moon' });
+    hyInteract('act', 'delete_contact');
   });
 
   /* ---- chat ---- */
@@ -625,7 +739,7 @@ footer a{color:#C4C0CC;}
     add('him', '？', 1100);
     add('me', '！！！', 1900);
     add('him', '雲厘厘', 3000);
-    ev('meme_sent', { page_group: 'when-i-meet-the-moon' });
+    hyInteract('act', 'send_meme');
   });
 })();
 </script>
